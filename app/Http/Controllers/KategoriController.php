@@ -136,52 +136,6 @@ class KategoriController extends Controller
             return redirect()->route('kategori.index')->with(['success' => 'Data Berhasil Dihapus!']);
 
         }
-
-    }
     
-    // // function untuk update api
-    // function updateAPIKategori(Request $request, $kategori_id){
-    //     $kategori = Kategori::find($kategori_id);
-
-    //     if (null == $kategori){
-    //         return response()->json(['status'=>"kategori tidak ditemukan"]);
-    //     }
-
-    //      $kategori->kategori= $request->kategori;
-    //      $kategori->jenis = $request->jenis;
-    //      $kategori->save();
-
-    //     return response()->json(["status"=>"kategori berhasil diubah"]);
-    // }
-
-    // // function untuk membuat index api
-    // function showAPIKategori(Request $request){
-    //     $kategori = Kategori::all();
-    //     return response()->json($kategori);
-    // }
-
-    // // function untuk create api
-    // function createAPIKategori(Request $request){
-    //     $request->validate([
-    //         'kategori' => 'required|string|max:100',
-    //         'jenis' => 'required|in:M,A,BHP,BTHP',
-    //     ]);
-
-    //     // Simpan data kategori
-    //     $kat = Kategori::create([
-    //         'kategori' => $request->kategori,
-    //         'jenis' => $request->jenis,
-    //     ]);
-
-    //     return response()->json(["status"=>"data berhasil dibuat"]);
-    // }
-
-    // // function untuk delete api
-    // function deleteAPIKategori($kategori_id){
-
-    //     $del_kategori = Kategori::findOrFail($kategori_id);
-    //     $del_kategori -> delete();
-
-    //     return response()->json(["status"=>"data berhasil dihapus"]);
-    // }
+    }
 }
