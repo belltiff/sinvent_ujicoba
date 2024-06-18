@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Kategori;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 
 class KategoriController extends Controller
 {
@@ -50,18 +51,32 @@ class KategoriController extends Controller
     public function store(Request $request)
     {
         // dd($request);
-        $this->validate($request, [
-            'kategori'              => 'required',
-            'jenis'              => 'required'
+        $request->validate([
+            'kategori'              => 'required|unique:kategori',
+            'jenis'              => 'required|in:M,A,BHP,BTHP'
         ]);
-        //upload image
-        // $foto = $request->file('foto');
-        // $foto->storeAs('public/foto', $foto->hashName());
-        //create post
-        Kategori::create([
-            'kategori'              => $request->jenis,
-            'jenis'              => $request->kategori
-        ]);
+
+        try {
+            DB::beginTransaction(); // Start the transaction
+
+            // Insert a new category using Eloquent
+            Kategori::create([
+                'kategori' => $request->kategori,
+                'jenis'  => $request->jenis,
+                'status'    => 'pending',
+            ]);
+
+            DB::commit(); // Commit the changes
+
+            // Flash success message to the session
+            Session::flash('success', 'Kategori berhasil disimpan!');
+        } catch (\Exception $e) {
+            DB::rollBack(); // Rollback in case of an exception
+            report($e); // Report the exception
+
+            // Flash failure message to the session
+            Session::flash('gagal', 'Kategori gagal disimpan!');
+        }
 
         //redirect to index
         return redirect()->route('kategori.index')->with(['success' => 'Data Berhasil Disimpan!']);
